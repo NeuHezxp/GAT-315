@@ -1,52 +1,55 @@
-#include "world.h"
-
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
+#include <world.h>
 
-Body* bodies = NULL;
-int bodyCount = 0;
+ncBody* ncBodies = NULL;
+int ncBodyCount = 0;
 
-Body* CreateBody() {
-	Body* body = (Body*)malloc(sizeof(Body));
-	assert(body != NULL);
+ncBody* CreateBody() {
+    // make space for body
+    ncBody* body = (ncBody*)malloc(sizeof(ncBody));
+    assert(body != NULL);
 
-	body->prev = NULL;
-	body->next = bodies;
+    memset(body, 0, sizeof(ncBody));
 
-	if (bodyCount != 0) {
-		bodies[0].prev = body;
-	}
-	bodyCount += 1;
+    body->prev = NULL;
+    body->next = ncBodies;
 
-	bodies = body;
+    // If the list isn't empty, change previous pointer to current head
+    if (ncBodies != NULL) {
+        ncBodies->prev = body;
+    }
 
-	return body;
+    // Update head to the new body
+    ncBodies = body;
+
+    ncBodyCount++;
+
+    return body;
 }
 
-void DestroyBody(Body* body) {
-	assert(body != NULL);
+void DestroyBody(ncBody* body) {
+    assert(body != NULL); // check if pointer is not NULL
 
-	if (body->prev != NULL) {
-		(body->prev)->next = body->next;
-	}
-	if (body->next != NULL) {
-		(body->next)->prev = body->prev;
-	}
+    // if next pointer exists 
+    if (body->prev != NULL) {
+        body->prev->next = body->next;//changes to next pointer of previous body
+    }
 
-	if (body == bodies) {
-		bodies = body->next;
-	}
-	bodyCount -= 1;
+    // if previous pointer exists 
+    if (body->next != NULL) {
+        body->next->prev = body->prev;//changes to previous pointer of next body
+    }
 
-	free(body);
-}
+    // If body is the head, update
+    if (body == ncBodies)
+    {
+        ncBodies = body->next;
+    }
 
-void DestroyAllBodies() {
-	Body* body = bodies;
-	Body* currentBody = NULL;
-	for (int i = 0; i < bodyCount; i++) {
-		currentBody = body->next;
-		DestroyBody(body);
-		body = currentBody;
-	}
+    ncBodyCount--;
+
+    // free memory
+    free(body);
 }

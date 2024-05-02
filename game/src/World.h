@@ -1,10 +1,10 @@
 #pragma once
 
-#include "body.h"
+#include "Body.h"
 
-extern Body* bodies;
-extern int bodyCount;
+extern ncBody* ncBodies;
+extern int ncncncBodyCount;
 
-extern Body* CreateBody();
-extern void DestroyBody(Body* body);
-extern void DestroyAllBodies();
+extern ncBody* CreatencBody();
+extern void DestroyncBody(ncBody* ncBody);
+extern void DestroyAllncBodies();

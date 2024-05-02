@@ -1,23 +1,18 @@
 #pragma once
-
+#include "raylib.h"
 #include <stdlib.h>
 
-#include "raylib.h"
-
-inline float GetRandomFloat01() {
+inline float GetRandomFloatValue01()
+{
 	return rand() / (float)RAND_MAX;
 }
 
-inline float GetRandomFloatValue(float min, float max) {
-	if (min > max) {
-		float temp = max;
-		max = min;
-		min = temp;
-	}
-
-	return ((max - min) * GetRandomFloat01()) + min;
+inline float GetRandomFloatValue(float min, float max)
+{
+	return min + (max - min) * GetRandomFloatValue01();
 }
 
-inline Vector2 CreateVector2(float x, float y) {
+inline Vector2 CreateVector2(float x, float y)
+{
 	return (Vector2) { x, y };
 }

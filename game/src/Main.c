@@ -1,58 +1,80 @@
-#include <stdlib.h>
-#include <assert.h>
-
 #include "raylib.h"
 #include "raymath.h"
-
+#include <world.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "Integrator.h"
 #include "body.h"
 #include "mathf.h"
-#include "world.h"
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
 
-//#define MAX_BODIES 100
-
-int main(void) {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Physics Engine");
+//----------------------------------------------------------------------------------
+// Main entry point
+//----------------------------------------------------------------------------------
+int main(void)
+{
+	InitWindow(800, 450, "raylib Physics");
 	SetTargetFPS(60);
 
-	while (!WindowShouldClose()) {
-		// Update
-		float deltaTime = GetFrameTime();
+
+	while (!WindowShouldClose())
+	{
+		float dt = GetFrameTime();
 		float fps = (float)GetFPS();
 
-		Vector2 mousePosition = GetMousePosition();
-		if (IsMouseButtonDown(0)) {
-			Body* body = CreateBody();
-			body->position = mousePosition;
-			body->velocity = CreateVector2(GetRandomFloatValue(-5.0f, 5.0f), GetRandomFloatValue(-5.0f, 5.0f));
+		Vector2 position = GetMousePosition();
+
+
+		if (IsMouseButtonDown(0))
+		{
+			ncBody* body = CreateBody();
+			body->position = position;
+			body->mass = GetRandomValue(1, 10);
+
 		}
 
-		// Render
+		//ApplyForce
+		ncBody* body = ncBodies;
+		while (body)
+		{
+			ApplyForce(body, CreateVector2(0, -50));
+
+			body = body->next; // Move to the next body
+		}
+
+		//update bodies
+		body = ncBodies;
+		while (body)
+		{
+			ExplicitEuler(body, dt);
+			ClearForce(body);
+
+			body = body->next; // Move to the next body
+		}
+
+
 		BeginDrawing();
 		ClearBackground(BLACK);
-
-		// Debug Stats
-		DrawText(TextFormat("FPS: %.2f (%.2f ms)", fps, 1000 / fps), 10, 10, 20, LIME);
-		DrawText(TextFormat("FRAME: %.4f", deltaTime), 10, 30, 20, LIME);
-
-		DrawCircle((int)mousePosition.x, (int)mousePosition.y, 15, YELLOW);
-
+		DrawCircle((int)position.x, (int)position.y, 20, RED);
+		// draw bodies
+		body = ncBodies;
+		while (body)
 		{
-			Body* body = bodies;
-			for (int i = 0; i < bodyCount; i++) {
-				body->position = Vector2Add(body->position, body->velocity);
-				DrawCircle((int)body->position.x, (int)body->position.y, 15, RED);
+			// Draw body 
+			DrawCircle(body->position.x, body->position.y, body->mass, BLUE);
 
-				body = body->next;
-			}
+			body = body->next; // Move to the next body
 		}
 
 		EndDrawing();
 	}
+
+	while (ncBodies) {
+		DestroyBody(ncBodies);
+	}
+
 	CloseWindow();
 
-	DestroyAllBodies();
 	return 0;
 }
+
