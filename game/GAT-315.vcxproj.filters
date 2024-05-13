@@ -12,7 +12,25 @@
     <ClCompile Include="src\Main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="World.c">
+    <ClCompile Include="src\World.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\body.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\force.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layout_name.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spring.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,6 +45,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\integrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\force.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor 1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
